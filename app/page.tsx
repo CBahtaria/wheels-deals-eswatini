@@ -81,14 +81,14 @@ export default function HomePage() {
           <div className="relative max-w-4xl mx-auto text-center">
             <span className="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-6"
               style={{ background: 'var(--gold-dim)', color: 'var(--gold)', border: '1px solid rgba(244,185,66,0.2)' }}>
-              Manzini, Eswatini
+              Matsapha, Eswatini
             </span>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight" style={{ color: 'var(--text)' }}>
               Find Your Perfect<br />
               <span style={{ color: 'var(--gold)' }}>Car in Eswatini</span>
             </h1>
             <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
-              Quality pre-owned vehicles in Manzini — fair prices, no pressure, WhatsApp support.
+              Quality pre-owned vehicles in Matsapha — fair prices, no pressure, WhatsApp support.
             </p>
 
             {/* Search */}
@@ -126,7 +126,7 @@ export default function HomePage() {
               {[
                 { label: 'Vehicles', value: '20+' },
                 { label: 'Est.', value: '2020' },
-                { label: 'Location', value: 'Manzini' },
+                { label: 'Location', value: 'Matsapha' },
                 { label: 'Response', value: '<1 Hour' },
               ].map(s => (
                 <div key={s.label} className="text-center">
@@ -179,12 +179,12 @@ export default function HomePage() {
         <section className="py-20 px-4 md:px-6" style={{ background: 'var(--bg)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8"
-              style={{ background: 'linear-gradient(135deg, #0d1a2e, #111d30)', border: '1px solid rgba(244,185,66,0.15)' }}>
+              style={{ background: 'var(--bg-card-2)', border: '1px solid var(--border)' }}>
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest mb-2" style={{ color: 'var(--gold)' }}>We Buy Cars</p>
                 <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: 'var(--text)' }}>Sell Your Car Fast</h2>
                 <p className="max-w-md" style={{ color: 'var(--text-muted)' }}>
-                  Get a free, no-obligation valuation. We pay fair market value, same day. Bring your car to Manzini or WhatsApp us first.
+                  Get a free, no-obligation valuation. We pay fair market value, same day. Bring your car to Matsapha or WhatsApp us first.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 shrink-0">
@@ -265,10 +265,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h2 className="text-xl font-semibold mb-1" style={{ color: 'var(--text)' }}>Ready to find your car?</h2>
-              <p style={{ color: 'var(--text-muted)' }}>Manzini Industrial Area · Mon–Fri 8–17 · Sat 8–13</p>
+              <p style={{ color: 'var(--text-muted)' }}>Matsapha, M200 · Mon–Fri 8–17 · Sat 8–13</p>
             </div>
             <div className="flex gap-3">
-              <a href="https://wa.me/26878000000" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/26879106129" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
                 style={{ background: '#25d366', color: 'white' }}>
                 WhatsApp Us

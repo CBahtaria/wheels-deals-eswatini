@@ -70,7 +70,7 @@ export default function SellPage() {
                   <p className="mb-6" style={{ color: 'var(--text-muted)' }}>
                     We&apos;ll review your details and get back to you via WhatsApp within 1 business hour.
                   </p>
-                  <a href="https://wa.me/26878000000" target="_blank" rel="noopener noreferrer"
+                  <a href="https://wa.me/26879106129" target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
                     style={{ background: '#25d366', color: 'white' }}>
                     Continue on WhatsApp
@@ -114,7 +114,7 @@ export default function SellPage() {
                     <p className="font-mono text-[10px] uppercase tracking-widest mb-3" style={{ color: 'var(--text-subtle)' }}>Your Contact</p>
                     <div className="space-y-3">
                       <Field label="Name" name="name" placeholder="Your name" required />
-                      <Field label="Phone / WhatsApp" name="phone" placeholder="+268 7800 0000" required />
+                      <Field label="Phone / WhatsApp" name="phone" placeholder="+268 7910 6129" required />
                       <div>
                         <label className="block font-mono text-[10px] uppercase tracking-widest mb-1.5" style={{ color: 'var(--text-subtle)' }}>Additional Notes</label>
                         <textarea name="message" rows={3} placeholder="Any extras, service history, recent work done..."

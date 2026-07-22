@@ -29,7 +29,7 @@ export default async function VehiclePage({ params }: { params: Promise<{ id: st
     .filter(v => v.id !== id && v.status === 'available' && (v.make === vehicle.make || Math.abs(v.price_szl - vehicle.price_szl) < 60000))
     .slice(0, 3)
 
-  const wa = `https://wa.me/26878000000?text=Hi%2C+I%27m+interested+in+the+${encodeURIComponent(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}`
+  const wa = `https://wa.me/26879106129?text=Hi%2C+I%27m+interested+in+the+${encodeURIComponent(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}`
 
   const SPEC_ROWS = [
     ['Year', vehicle.year.toString()],

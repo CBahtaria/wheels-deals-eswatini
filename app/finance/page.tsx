@@ -52,7 +52,7 @@ export default function FinancePage() {
                 <div className="flex gap-2 flex-wrap">
                   {[12, 24, 36, 48, 60].map(t => (
                     <button key={t} onClick={() => setTerm(t)}
-                      className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      className="px-4 py-2.5 rounded-lg text-sm font-medium transition-colors min-h-[44px]"
                       style={{
                         background: term === t ? 'var(--gold)' : 'var(--bg)',
                         color: term === t ? '#06090f' : 'var(--text-muted)',
@@ -69,7 +69,7 @@ export default function FinancePage() {
 
             {/* Output */}
             <div className="lg:col-span-2 space-y-4">
-              <div className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #0d1a2e, #111d30)', border: '1px solid rgba(244,185,66,0.15)' }}>
+              <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--bg-card-2)', border: '1px solid rgba(244,185,66,0.25)' }}>
                 <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: 'var(--text-subtle)' }}>Monthly Payment</p>
                 <p className="text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--gold)' }}>
                   {fmtSZL(monthly)}
@@ -96,7 +96,7 @@ export default function FinancePage() {
                 For illustrative purposes only. Actual rates and terms depend on credit approval. Contact us for partnered finance options.
               </p>
 
-              <a href="https://wa.me/26878000000?text=Hi%2C+I%27d+like+to+enquire+about+finance+options"
+              <a href="https://wa.me/26879106129?text=Hi%2C+I%27d+like+to+enquire+about+finance+options"
                 target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-semibold text-sm"
                 style={{ background: '#25d366', color: 'white' }}>

@@ -2,14 +2,69 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme, type Theme } from './ThemeProvider'
 
 const LINKS = [
   { href: '/',        label: 'Home' },
   { href: '/stock',   label: 'Stock' },
-  { href: '/sell',    label: 'Sell Your Car' },
+  { href: '/sell',    label: 'Sell' },
   { href: '/finance', label: 'Finance' },
+  { href: '/faq',     label: 'FAQ' },
   { href: '/about',   label: 'About' },
 ]
+
+const WA_URL = 'https://wa.me/26879106129?text=Hi%2C+I%27m+interested+in+a+vehicle'
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="15" height="15">
+      <circle cx="8" cy="8" r="3"/>
+      <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M11.89 3.05l-1.06 1.06M4.11 11.89l-1.06 1.06"/>
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
+      <path d="M13.5 10A6 6 0 016 2.5a6 6 0 000 11 6 6 0 007.5-3.5z"/>
+    </svg>
+  )
+}
+
+function AutoIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
+      <circle cx="8" cy="8" r="6"/>
+      <path d="M8 2v12" strokeDasharray="2 2"/>
+      <path clipPath="url(#left)" d="M2 8a6 6 0 016-6v12A6 6 0 012 8z" fill="currentColor" stroke="none" opacity="0.5"/>
+    </svg>
+  )
+}
+
+const CYCLE: Theme[] = ['auto', 'light', 'dark']
+const THEME_LABELS: Record<Theme, string> = { auto: 'Auto', light: 'Light', dark: 'Dark' }
+const THEME_ICONS: Record<Theme, React.FC> = { auto: AutoIcon, light: SunIcon, dark: MoonIcon }
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  const Icon = THEME_ICONS[theme]
+  function cycle() {
+    const next = CYCLE[(CYCLE.indexOf(theme) + 1) % CYCLE.length]
+    setTheme(next)
+  }
+  return (
+    <button
+      onClick={cycle}
+      title={`Theme: ${THEME_LABELS[theme]} — click to change`}
+      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-mono uppercase tracking-widest transition-colors"
+      style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
+    >
+      <Icon />
+      <span className="hidden lg:inline">{THEME_LABELS[theme]}</span>
+    </button>
+  )
+}
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -31,14 +86,14 @@ export function Nav() {
     <header
       className="fixed top-0 inset-x-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(6,9,15,0.92)' : 'transparent',
+        background: scrolled ? 'var(--nav-scrolled-bg)' : 'transparent',
         backdropFilter: scrolled ? 'blur(20px) saturate(160%)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
+        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
       }}
     >
-      <nav className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group" onClick={() => setOpen(false)}>
+        <Link href="/" className="flex items-center gap-3 group shrink-0" onClick={() => setOpen(false)}>
           <span
             className="flex items-center justify-center w-9 h-9 rounded-lg font-bold text-sm"
             style={{ background: 'var(--gold)', color: '#06090f', letterSpacing: '-0.5px' }}
@@ -55,44 +110,46 @@ export function Nav() {
         <ul className="hidden md:flex items-center gap-6">
           {LINKS.map(l => (
             <li key={l.href}>
-              <Link
-                href={l.href}
-                className="text-sm transition-colors hover:text-white"
-                style={{ color: 'var(--text-muted)' }}
-              >
+              <Link href={l.href} className="text-sm transition-colors hover:text-white" style={{ color: 'var(--text-muted)' }}>
                 {l.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <a
-          href="https://wa.me/26878000000?text=Hi%2C+I%27m+interested+in+a+vehicle"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-90"
-          style={{ background: 'var(--gold)', color: '#06090f' }}
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
-          </svg>
-          WhatsApp Us
-        </a>
+        {/* Desktop right side */}
+        <div className="hidden md:flex items-center gap-2 shrink-0">
+          <ThemeToggle />
+          <a
+            href={WA_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-90"
+            style={{ background: 'var(--gold)', color: '#06090f' }}
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+            </svg>
+            WhatsApp Us
+          </a>
+        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle menu"
-        >
-          <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
-            animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} transition={{ duration: 0.2 }} />
-          <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
-            animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }} />
-          <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
-            animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} transition={{ duration: 0.2 }} />
-        </button>
+        {/* Mobile: theme toggle + hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+          >
+            <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
+              animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} transition={{ duration: 0.2 }} />
+            <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
+              animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.2 }} />
+            <motion.span className="w-6 h-0.5 rounded-full" style={{ background: 'var(--text)' }}
+              animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} transition={{ duration: 0.2 }} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile panel */}
@@ -104,7 +161,7 @@ export function Nav() {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
             className="md:hidden overflow-hidden"
-            style={{ background: 'rgba(6,9,15,0.98)', borderBottom: '1px solid var(--border)' }}
+            style={{ background: 'var(--nav-mobile-bg)', borderBottom: '1px solid var(--border)' }}
           >
             <div className="px-4 py-6 space-y-4">
               {LINKS.map(l => (
@@ -119,7 +176,7 @@ export function Nav() {
                 </Link>
               ))}
               <a
-                href="https://wa.me/26878000000?text=Hi%2C+I%27m+interested+in+a+vehicle"
+                href={WA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold mt-2"

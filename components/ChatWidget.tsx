@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
@@ -38,6 +38,7 @@ function Bubble({ msg }: { msg: Message }) {
 }
 
 export function ChatWidget() {
+  const reduced = useReducedMotion()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: "Sawubona! I'm Thandi 👋 Your Wheels & Deals assistant. I can help you find a car, estimate finance, or answer any questions. What are you looking for?" }
@@ -64,9 +65,9 @@ export function ChatWidget() {
         body: JSON.stringify({ messages: next }),
       })
       const data = await res.json()
-      setMessages(prev => [...prev, { role: 'assistant', content: data.content ?? 'Sorry, something went wrong. Please WhatsApp us at +268 7800 0000.' }])
+      setMessages(prev => [...prev, { role: 'assistant', content: data.content ?? 'Sorry, something went wrong. Please WhatsApp us at +268 7910 6129.' }])
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Network error. Please WhatsApp us at +268 7800 0000 🙏' }])
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Network error. Please WhatsApp us at +268 7910 6129 🙏' }])
     } finally {
       setLoading(false)
     }
@@ -77,10 +78,10 @@ export function ChatWidget() {
       {/* Chat bubble trigger */}
       <motion.button
         onClick={() => setOpen(o => !o)}
-        className="fixed bottom-24 right-6 z-[998] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
+        className="fixed bottom-[100px] right-6 z-[998] w-14 h-14 rounded-full flex items-center justify-center shadow-2xl"
         style={{ background: 'var(--gold)', color: '#06090f' }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={reduced ? {} : { scale: 1.08 }}
+        whileTap={reduced ? {} : { scale: 0.95 }}
         aria-label="Open chat assistant"
       >
         {open ? (
@@ -98,11 +99,11 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={reduced ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-            className="fixed bottom-44 right-6 z-[997] w-[340px] md:w-[380px] rounded-2xl overflow-hidden flex flex-col"
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.95 }}
+            transition={reduced ? { duration: 0.1 } : { type: 'spring', damping: 26, stiffness: 280 }}
+            className="fixed bottom-[172px] right-6 z-[997] w-[340px] md:w-[380px] rounded-2xl overflow-hidden flex flex-col"
             style={{
               maxHeight: '70vh',
               background: 'var(--bg-card)',
@@ -119,7 +120,7 @@ export function ChatWidget() {
                 <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Thandi</p>
                 <p className="text-[10px]" style={{ color: 'var(--green)' }}>● Online · Car Assistant</p>
               </div>
-              <a href="https://wa.me/26878000000" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/26879106129" target="_blank" rel="noopener noreferrer"
                 className="ml-auto text-[10px] px-2.5 py-1 rounded-full font-semibold"
                 style={{ background: '#25d366', color: 'white' }}>
                 WhatsApp
@@ -136,7 +137,8 @@ export function ChatWidget() {
                   <div className="flex gap-1 px-3.5 py-2.5 rounded-2xl" style={{ background: 'var(--bg-card-2)', borderRadius: '4px 18px 18px 18px' }}>
                     {[0,1,2].map(i => (
                       <motion.span key={i} className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--text-subtle)' }}
-                        animate={{ opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }} />
+                        animate={reduced ? { opacity: 1 } : { opacity: [0.3, 1, 0.3] }}
+                        transition={reduced ? {} : { repeat: Infinity, duration: 1, delay: i * 0.2 }} />
                     ))}
                   </div>
                 </div>
@@ -149,7 +151,7 @@ export function ChatWidget() {
               <div className="px-4 pb-2 flex flex-wrap gap-1.5">
                 {QUICK_PROMPTS.map(p => (
                   <button key={p} onClick={() => send(p)}
-                    className="text-[10px] px-2.5 py-1 rounded-full transition-colors"
+                    className="text-[10px] px-3 py-1.5 rounded-full transition-colors min-h-[32px]"
                     style={{ background: 'var(--bg-card-2)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
                     {p}
                   </button>

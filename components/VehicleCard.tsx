@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import type { Vehicle } from '@/lib/supabase'
 
 const STATUS_STYLE: Record<string, { label: string; bg: string; color: string }> = {
@@ -21,15 +21,16 @@ function fmtMileage(n: number) {
 export function VehicleCard({ vehicle, index = 0 }: { vehicle: Vehicle; index?: number }) {
   const status = STATUS_STYLE[vehicle.status] ?? STATUS_STYLE.available
   const sold = vehicle.status === 'sold'
-  const wa = `https://wa.me/26878000000?text=Hi%2C+I%27m+interested+in+the+${encodeURIComponent(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}+listed+on+your+website`
+  const reduced = useReducedMotion()
+  const wa = `https://wa.me/26879106129?text=Hi%2C+I%27m+interested+in+the+${encodeURIComponent(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}+listed+on+your+website`
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.4, delay: index * 0.06, ease: 'easeOut' }}
-      whileHover={sold ? {} : { y: -4 }}
+      transition={reduced ? { duration: 0 } : { duration: 0.4, delay: index * 0.06, ease: 'easeOut' }}
+      whileHover={sold || reduced ? {} : { y: -4 }}
       className="rounded-xl overflow-hidden flex flex-col"
       style={{
         background: 'var(--bg-card)',

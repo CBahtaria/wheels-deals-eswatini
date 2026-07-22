@@ -104,7 +104,7 @@ export function SearchFilter({ vehicles, onFilter }: { vehicles: Vehicle[]; onFi
         </div>
       </div>
       {count > 0 && (
-        <button onClick={reset} className="text-sm underline" style={{ color: 'var(--gold)' }}>Clear all filters</button>
+        <button onClick={reset} className="text-sm underline py-2 min-h-[44px]" style={{ color: 'var(--gold)' }}>Clear all filters</button>
       )}
     </div>
   )
