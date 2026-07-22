@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { VehicleCard } from '@/components/VehicleCard'
+import { HeroStats } from '@/components/HeroStats'
 import { MOCK_VEHICLES } from '@/lib/vehicles'
 
 const featured = MOCK_VEHICLES.filter(v => v.status === 'available').slice(0, 6)
@@ -122,19 +123,7 @@ export default function HomePage() {
             </div>
 
             {/* Stats strip */}
-            <div className="flex flex-wrap justify-center gap-8">
-              {[
-                { label: 'Vehicles', value: '20+' },
-                { label: 'Est.', value: '2020' },
-                { label: 'Location', value: 'Matsapha' },
-                { label: 'Response', value: '<1 Hour' },
-              ].map(s => (
-                <div key={s.label} className="text-center">
-                  <div className="text-xl font-bold mb-0.5" style={{ color: 'var(--gold)' }}>{s.value}</div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-subtle)' }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
+            <HeroStats />
           </div>
         </section>
 
