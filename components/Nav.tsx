@@ -2,8 +2,6 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useTheme, type Theme } from './ThemeProvider'
-
 const LINKS = [
   { href: '/',        label: 'Home' },
   { href: '/stock',   label: 'Stock' },
@@ -14,57 +12,6 @@ const LINKS = [
 ]
 
 const WA_URL = 'https://wa.me/26879106129?text=Hi%2C+I%27m+interested+in+a+vehicle'
-
-function SunIcon() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="15" height="15">
-      <circle cx="8" cy="8" r="3"/>
-      <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M11.89 3.05l-1.06 1.06M4.11 11.89l-1.06 1.06"/>
-    </svg>
-  )
-}
-
-function MoonIcon() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
-      <path d="M13.5 10A6 6 0 016 2.5a6 6 0 000 11 6 6 0 007.5-3.5z"/>
-    </svg>
-  )
-}
-
-function AutoIcon() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14">
-      <circle cx="8" cy="8" r="6"/>
-      <path d="M8 2v12" strokeDasharray="2 2"/>
-      <path clipPath="url(#left)" d="M2 8a6 6 0 016-6v12A6 6 0 012 8z" fill="currentColor" stroke="none" opacity="0.5"/>
-    </svg>
-  )
-}
-
-const CYCLE: Theme[] = ['auto', 'light', 'dark']
-const THEME_LABELS: Record<Theme, string> = { auto: 'Auto', light: 'Light', dark: 'Dark' }
-const THEME_ICONS: Record<Theme, React.FC> = { auto: AutoIcon, light: SunIcon, dark: MoonIcon }
-
-function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
-  const Icon = THEME_ICONS[theme]
-  function cycle() {
-    const next = CYCLE[(CYCLE.indexOf(theme) + 1) % CYCLE.length]
-    setTheme(next)
-  }
-  return (
-    <button
-      onClick={cycle}
-      title={`Theme: ${THEME_LABELS[theme]} — click to change`}
-      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-mono uppercase tracking-widest transition-colors"
-      style={{ color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-    >
-      <Icon />
-      <span className="hidden lg:inline">{THEME_LABELS[theme]}</span>
-    </button>
-  )
-}
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -119,7 +66,6 @@ export function Nav() {
 
         {/* Desktop right side */}
         <div className="hidden md:flex items-center gap-2 shrink-0">
-          <ThemeToggle />
           <a
             href={WA_URL}
             target="_blank"
@@ -134,9 +80,8 @@ export function Nav() {
           </a>
         </div>
 
-        {/* Mobile: theme toggle + hamburger */}
+        {/* Mobile */}
         <div className="md:hidden flex items-center gap-2">
-          <ThemeToggle />
           <button
             className="w-10 h-10 flex flex-col items-center justify-center gap-1.5"
             onClick={() => setOpen(o => !o)}

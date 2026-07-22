@@ -71,7 +71,7 @@ export default function HomePage() {
       <main>
         {/* ── Hero ────────────────────────────────────────────── */}
         <section
-          className="relative min-h-[100svh] flex flex-col items-center justify-center px-4 pt-16 overflow-hidden"
+          className="hero-dark relative min-h-[100svh] flex flex-col items-center justify-center px-4 pt-16 overflow-hidden"
           style={{ background: 'linear-gradient(160deg, #06090f 0%, #0d1a2e 60%, #06090f 100%)' }}
         >
           {/* Grid bg */}

@@ -27,7 +27,7 @@ function Bubble({ msg }: { msg: Message }) {
         className="max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed"
         style={{
           background: isUser ? 'var(--blue-2)' : 'var(--bg-card-2)',
-          color: 'var(--text)',
+          color: isUser ? 'white' : 'var(--text)',
           borderRadius: isUser ? '18px 18px 4px 18px' : '4px 18px 18px 18px',
         }}
       >
