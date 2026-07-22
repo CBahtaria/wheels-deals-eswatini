@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ChatWidget } from '@/components/ChatWidget'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body style={{ background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
         {children}
+        <ChatWidget />
         {/* Floating WhatsApp CTA — visible on all pages */}
         <a
           href="https://wa.me/26878000000?text=Hi%2C%20I%27m%20interested%20in%20a%20vehicle%20from%20Wheels%20%26%20Deals%20Eswatini"
