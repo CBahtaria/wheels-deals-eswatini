@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ChatWidget } from '@/components/ChatWidget'
+import { SurveyWidget } from '@/components/SurveyWidget'
+import { StickyWhatsApp } from '@/components/StickyWhatsApp'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -20,6 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh' }}>
         {children}
         <ChatWidget />
+        <SurveyWidget />
+        <StickyWhatsApp />
         {/* Floating WhatsApp CTA */}
         <a
           href="https://wa.me/26879106129?text=Hi%2C%20I%27m%20interested%20in%20a%20vehicle%20from%20Wheels%20%26%20Deals%20Eswatini"

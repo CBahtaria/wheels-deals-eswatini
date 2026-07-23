@@ -9,13 +9,14 @@ export default function SellPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [formData, setFormData] = useState<Record<string, string>>({})
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError('')
     const form = e.currentTarget
-    const data = Object.fromEntries(new FormData(form))
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>
     try {
       const res = await fetch('/api/inquiries', {
         method: 'POST',
@@ -23,6 +24,8 @@ export default function SellPage() {
         body: JSON.stringify({ ...data, type: 'sell' }),
       })
       if (!res.ok) throw new Error('Failed')
+      const captured = { ...data }
+      setFormData(captured)
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please WhatsApp us directly.')
@@ -70,11 +73,17 @@ export default function SellPage() {
                   <p className="mb-6" style={{ color: 'var(--text-muted)' }}>
                     We&apos;ll review your details and get back to you via WhatsApp within 1 business hour.
                   </p>
-                  <a href="https://wa.me/26879106129" target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
-                    style={{ background: '#25d366', color: 'white' }}>
-                    Continue on WhatsApp
-                  </a>
+                  {(() => {
+                    const waText = encodeURIComponent(`Hi Wheels & Deals, I just submitted a valuation request.\n\nCar: ${formData.make} ${formData.model} (${formData.year})\nMileage: ${formData.mileage} km\nCondition: ${formData.condition}\nAsking: SZL ${formData.asking_price || 'open to offer'}\n\nName: ${formData.name} | ${formData.phone}\n\nI'm sending photos now 📸`)
+                    const waUrl = `https://wa.me/26879106129?text=${waText}`
+                    return (
+                      <a href={waUrl} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"
+                        style={{ background: '#25d366', color: 'white' }}>
+                        Continue on WhatsApp
+                      </a>
+                    )
+                  })()}
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">

@@ -2,11 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
-import { VehicleCard } from '@/components/VehicleCard'
 import { HeroStats } from '@/components/HeroStats'
-import { MOCK_VEHICLES } from '@/lib/vehicles'
-
-const featured = MOCK_VEHICLES.filter(v => v.status === 'available').slice(0, 6)
+import { AsciiVideoBackground } from '@/components/AsciiVideoBackground'
+import { getVehicles } from '@/lib/supabase'
+import { PersonalizedFeed } from '@/components/PersonalizedFeed'
 
 const WHY = [
   {
@@ -65,7 +64,9 @@ const TESTIMONIALS = [
   },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const allVehicles = await getVehicles()
+  const featured = allVehicles.filter(v => v.status === 'available').slice(0, 6)
   return (
     <>
       <Nav />
@@ -79,7 +80,10 @@ export default function HomePage() {
           <div className="absolute inset-0 opacity-[0.03]"
             style={{ backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-          <div className="relative max-w-4xl mx-auto text-center">
+          <AsciiVideoBackground />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 0%, rgba(6,9,15,0.5) 60%, #06090f 100%)', zIndex: 1 }} />
+
+          <div className="relative max-w-4xl mx-auto text-center" style={{ position: 'relative', zIndex: 2 }}>
             <span className="inline-block font-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-6"
               style={{ background: 'var(--gold-dim)', color: 'var(--gold)', border: '1px solid rgba(244,185,66,0.2)' }}>
               Matsapha, Eswatini
@@ -139,9 +143,7 @@ export default function HomePage() {
                 View All →
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {featured.map((v, i) => <VehicleCard key={v.id} vehicle={v} index={i} />)}
-            </div>
+            <PersonalizedFeed vehicles={featured} />
           </div>
         </section>
 
