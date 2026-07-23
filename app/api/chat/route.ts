@@ -1,19 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { MOCK_VEHICLES } from '@/lib/vehicles'
+import { getVehicles } from '@/lib/supabase'
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
-function buildInventoryContext(): string {
-  const available = MOCK_VEHICLES.filter(v => v.status === 'available')
-  return available.map(v =>
-    `• ${v.year} ${v.make} ${v.model} — SZL ${v.price_szl.toLocaleString('en-ZA')} | ${v.mileage_km.toLocaleString('en-ZA')}km | ${v.transmission} | ${v.fuel_type} | ${v.condition} condition | ID: ${v.id}`
-  ).join('\n')
+async function buildInventoryContext(): Promise<string> {
+  try {
+    const vehicles = await getVehicles()
+    const available = vehicles.filter(v => v.status === 'available')
+    if (available.length === 0) return 'No vehicles currently listed — direct customers to WhatsApp for latest stock.'
+    return available.map(v =>
+      `• ${v.year} ${v.make} ${v.model} — SZL ${v.price_szl.toLocaleString('en-ZA')} | ${v.mileage_km.toLocaleString('en-ZA')}km | ${v.transmission} | ${v.fuel_type} | ${v.condition} condition | ID: ${v.id}`
+    ).join('\n')
+  } catch {
+    return 'Inventory temporarily unavailable — direct customers to WhatsApp for current stock.'
+  }
 }
 
-const SYSTEM_PROMPT = `You are Thandi, the friendly car sales assistant for Wheels & Deals Eswatini — a used car dealership in Manzini, Eswatini.
+const SYSTEM_PROMPT_BASE = `You are Thandi, the friendly car sales assistant for Wheels & Deals Eswatini — a used car dealership in Manzini, Eswatini.
 
 Your personality:
 - Warm, helpful, and knowledgeable about cars
@@ -30,9 +36,6 @@ Your capabilities:
 - Explain the buying and selling process
 - Direct customers to WhatsApp (+268 7910 6129) for viewings and formal enquiries
 - Never invent vehicles not in the inventory list
-
-Current available inventory:
-${buildInventoryContext()}
 
 Business info:
 - Location: Matsapha, M200, Eswatini
@@ -67,18 +70,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Messages required' }, { status: 400 })
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey) {
+  if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({
       role: 'assistant',
-      content: "Hi! I'm Thandi, your Wheels & Deals assistant. I'm not fully configured yet — please WhatsApp us directly at +268 7910 6129 and we'll help you right away! 🚗",
+      content: "Sawubona! I'm Thandi 👋 For the fastest help with our current stock, WhatsApp us directly at +268 7910 6129 — we'll get back to you right away! 🚗",
     })
   }
+
+  const inventoryContext = await buildInventoryContext()
+  const systemPrompt = `${SYSTEM_PROMPT_BASE}\n\nCurrent available inventory:\n${inventoryContext}`
 
   const response = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 512,
-    system: SYSTEM_PROMPT,
+    system: systemPrompt,
     messages: messages.map((m: { role: string; content: string }) => ({
       role: m.role as 'user' | 'assistant',
       content: m.content,
